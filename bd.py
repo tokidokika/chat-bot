@@ -36,19 +36,28 @@ def get_date():
         country = get_title[len(get_title) - 3]
         city = get_title[len(get_title) - 4]
         print(year, month, country, city)
-    return year, month, country, city  # ??? Возвращает только последний. Либо (если находится где и print) возвращает = ('2020.', 'полумарафоны)', '(марафоны,', 'забегов')
+    return year, month, country, city 
 
 
 def calendar_page():
     response = get_html('https://letsportpeople.com/ru/year-2020-races_ru/')
 
+    month_tag = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+
     soup = BeautifulSoup(response, 'html.parser')
     calendar = soup.find_all('div', class_='right70')
-    full_calendar = calendar.find_all('div', style_='width:55')
-    # calendar_list = []
-    for case in full_calendar:
-        title = case.find('a').text
-        url = case.find('a')['href']
-        print(title, url)
+    find_h2 = soup.find_all('h2')
+    for month in find_h2:
+        idmonth = month.find('a')['id']
+    if idmonth in month_tag:
+        find_h5 = soup.find('h5')
+        print(find_h5)
+        for case in calendar:
 
-print(calendar_page())
+            title = case.find('a')
+            if title:
+                title_text = title.text
+                url = case.find('a')['href']
+                print(url,title_text)
+
+calendar_page()
