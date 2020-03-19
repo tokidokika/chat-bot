@@ -45,19 +45,41 @@ def calendar_page():
     month_tag = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
     soup = BeautifulSoup(response, 'html.parser')
+    # cross = soup.find_all('strong')
+
+    # for crossed in cross:
+    #     if crossed.find('s'):
+    #         continue
+        
+
     calendar = soup.find_all('div', class_='right70')
     find_h2 = soup.find_all('h2')
-    for month in find_h2:
-        idmonth = month.find('a')['id']
-    if idmonth in month_tag:
-        find_h5 = soup.find('h5')
-        print(find_h5)
-        for case in calendar:
+    find_h5 = soup.find_all('h5')
+    calendar_event = calendar.find('a')
 
-            title = case.find('a')
-            if title:
-                title_text = title.text
-                url = case.find('a')['href']
-                print(url,title_text)
+    for event in calendar_event:
+        print(event)
+    
+    for event in calendar:
+        title = event.find('a')
+        if title:
+            title_text = title.text
+            url = event.find('a')['href']
+
+    for month in find_h2:
+        id_month = month.find('a')['id']
+        if id_month in month_tag:
+            real_month = id_month
+
+    for n in real_month:
+        title_month = n.find('a').text
+        print(title_month) # через сиблинги
+            
+    for date_month in find_h5:
+        id_date = date_month.find('strong').text
+        print(id_date)
 
 calendar_page()
+
+def has_style_but_no_border(tag):
+    return tag.has_attr('style') and not tag.has_attr('border:none')
