@@ -38,6 +38,17 @@ def get_date():
         print(year, month, country, city)
     return year, month, country, city 
 
+def find_tag_h2():
+    page = get_html('https://letsportpeople.com/ru/year-2020-races_ru/')
+    soup = BeautifulSoup(page, 'html.parser')
+    return soup.find_all('h2')
+
+
+def find_tag_h5():
+    page = get_html('https://letsportpeople.com/ru/year-2020-races_ru/')
+    soup = BeautifulSoup(page, 'html.parser')
+    return soup.find_all('h5')
+
 
 def calendar_page():
     response = get_html('https://letsportpeople.com/ru/year-2020-races_ru/')
@@ -52,34 +63,27 @@ def calendar_page():
     #         continue
         
 
-    calendar = soup.find_all('div', class_='right70')
-    find_h2 = soup.find_all('h2')
-    find_h5 = soup.find_all('h5')
-    calendar_event = calendar.find('a')
+    calendar = soup.find_all('div', attrs={"class":"right70"})
+    find_h2 = find_tag_h2()
+    find_h5 = find_tag_h5()
 
-    for event in calendar_event:
-        print(event)
-    
-    for event in calendar:
-        title = event.find('a')
-        if title:
-            title_text = title.text
-            url = event.find('a')['href']
+    # for event in calendar:
+    #     title = event.find('a')
+    #     if title:
+    #         title_text = title.text
+    #         url = event.find('a')['href']
 
     for month in find_h2:
         id_month = month.find('a')['id']
         if id_month in month_tag:
             real_month = id_month
 
-    for n in real_month:
-        title_month = n.find('a').text
-        print(title_month) # через сиблинги
             
     for date_month in find_h5:
         id_date = date_month.find('strong').text
-        print(id_date)
 
 calendar_page()
 
-def has_style_but_no_border(tag):
-    return tag.has_attr('style') and not tag.has_attr('border:none')
+# def has_style_but_no_border(tag):
+#     return tag.has_attr('style') and not tag.has_attr('border:none')
+
