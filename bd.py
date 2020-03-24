@@ -17,7 +17,7 @@ def calendar_page():
 
     # bs_ = BeautifulSoup(response, 'html.parser').find_all('div', recursive=False) 
     soup = BeautifulSoup(response, 'html.parser')
-    calendar = soup.find_all('div') 
+    calendar = soup.find_all('div', recursive=False) 
     month_tag = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
     monthes = []
