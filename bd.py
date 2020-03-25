@@ -17,7 +17,7 @@ def calendar_page():
 
     # bs_ = BeautifulSoup(response, 'html.parser').find_all('div', recursive=False) 
     soup = BeautifulSoup(response, 'html.parser')
-    calendar = soup.find_all('div', recursive=False) 
+    calendar = soup.find_all('div', recursive=False)
     month_tag = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
     monthes = []
@@ -29,30 +29,39 @@ def calendar_page():
             mont = mon.get('id')
             if mont in month_tag:
                 monthes.append(mont)
-    print(monthes)
+    
                 
     i = 0
     for t in calendar:
         d = {}
+
         id_ = t.find('a')
         if id_:
             idd = id_.get('id')
             if idd in month_tag:
                 i += 1
-        tag_s = t.find('strong')
+
+        tag_s = t.find('h5')
         if tag_s:
-            tag_strong = tag_s.text
-            d['month_day'] = tag_strong
+            tag_day = tag_s.text
+            d['month_day'] = tag_day
+
         href = t.find('a')
         if href:
             links = href.get('href')
             if links:
                 d['links'] = links
+                
             event_text = href.text
             if event_text:
                 d['event_name'] = event_text
-                d['month'] = monthes[i - 1]
-        
+                d['month'] = monthes[i - 1] 
+                dist = t.find('strong')
+                if dist:
+                    distance = dist.text
+                    d['distance'] = distance        
+                
+                    print(d)
            
             
 
