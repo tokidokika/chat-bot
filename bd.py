@@ -15,9 +15,8 @@ def get_html(url):
 def calendar_page():
     response = get_html('https://letsportpeople.com/ru/year-2020-races_ru/')
 
-    # bs_ = BeautifulSoup(response, 'html.parser').find_all('div', recursive=False) 
     soup = BeautifulSoup(response, 'html.parser')
-    calendar = soup.find_all('div', recursive=False)
+    calendar = soup.find_all('div')
     month_tag = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
     monthes = []
@@ -45,27 +44,30 @@ def calendar_page():
         if tag_s:
             tag_day = tag_s.text
             d['month_day'] = tag_day
+            decline = t.find('s')
+            if decline:
+                d['decline'] = 'Отменено'
 
-        href = t.find('a')
-        if href:
-            links = href.get('href')
-            if links:
-                d['links'] = links
-                
-            event_text = href.text
-            if event_text:
-                d['event_name'] = event_text
-                d['month'] = monthes[i - 1] 
-                dist = t.find('strong')
-                if dist:
-                    distance = dist.text
-                    d['distance'] = distance        
-                
-                    print(d)
+            href = t.find('a')
+            if href:
+                links = href.get('href')
+                if links:
+                    d['links'] = links
+                    
+                event_text = href.text
+                if event_text:
+                    d['event_name'] = event_text
+                    if month:
+                        d['month'] = monthes[i - 1]
+
+                    dist = t.find_all('strong')
+                    if dist:
+                        dist = dist[-1]
+                        distance = dist.text
+                        d['distance'] = distance        
+                    
+                        print(d)                    
            
-            
-
-
 calendar_page()
 
-
+def save_event(d):
