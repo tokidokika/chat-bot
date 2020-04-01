@@ -2,5 +2,6 @@ env/
 .vscode/
 __pycache__/
 example.py
-kate.py
 get_event.py
+create_db.py
+mydb.db
